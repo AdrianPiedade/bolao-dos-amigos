@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolão da Família</title>
+<style>
+    :root {
+        --primary-color: #1a5a32;
+        --bg-color: #f4f7f6;
+        --card-bg: #ffffff;
+        --text-color: #333333;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: var(--primary-color);
+        color: white;
+        text-align: center;
+        padding: 1rem 0;
+    }
+
+    .tabs {
+        display: flex;
+        justify-content: center;
+        background-color: #123f22;
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        background-color: inherit;
+        color: white;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 20px;
+        font-size: 16px;
+        transition: 0.3s;
+        flex: 1;
+        max-width: 200px;
+        text-align: center;
+    }
+
+    .tab-btn:hover {
+        background-color: #2e8b50;
+    }
+
+    .tab-btn.active {
+        background-color: var(--bg-color);
+        color: var(--primary-color);
+        font-weight: bold;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .match {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .team {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        min-width: 80px;
+    }
+
+    .team img {
+        width: 40px;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 5px;
+    }
+
+    .score {
+        font-size: 24px;
+        font-weight: bold;
+        padding: 0 15px;
+    }
+
+    .score-input {
+        background-color: #eee;
+        padding: 5px 15px;
+        border-radius: 4px;
+        font-weight: bold;
+        min-width: 30px;
+        text-align: center;
+    }
+
+    .group-title {
+        font-size: 14px;
+        color: #666;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: var(--card-bg);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .palpite-row {
+        background-color: #f9f9f9;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    #loading {
+        text-align: center;
+        padding: 20px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+        .tab-btn {
+            font-size: 14px;
+            padding: 10px;
+        }
+        
+        .score {
+            font-size: 18px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🏆 Bolão dos Amigos</h1>
+</header>
+
+<div class="tabs">
+    <button class="tab-btn active" onclick="abrirAba('ranking')" id="btn-ranking" disabled>Ranking</button>
+    <button class="tab-btn" onclick="abrirAba('palpites')" id="btn-palpites" disabled>Palpites</button>
+    <button class="tab-btn" onclick="abrirAba('resultados')" id="btn-resultados" disabled>Resultados</button>
+</div>
+
+<div id="loading">Carregando dados do bolão...</div>
+
+<div id="ranking" class="tab-content">
+    <h2>Classificação Atual</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Posição</th>
+                <th>Jogador</th>
+                <th>Pontos</th>
+            </tr>
+        </thead>
+        <tbody id="ranking-body">
+        </tbody>
+    </table>
+</div>
+
+<div id="palpites" class="tab-content">
+    <h2>Palpites dos Jogadores</h2>
+    <div id="palpites-container"></div>
+</div>
+
+<div id="resultados" class="tab-content">
+    <h2>Resultados Oficiais</h2>
+    <div id="resultados-container"></div>
+</div>
+
+<script>
+    let jogadoresOficiais = [];
+    let times = {};
+    let jogos = [];
+    let palpites = [];
+
+    async function carregarDados() {
+        try {
+            const respJogadores = await fetch('jogadores.json');
+            jogadoresOficiais = await respJogadores.json();
+
+            const respTimes = await fetch('times.json');
+            times = await respTimes.json();
+
+            const respJogos = await fetch('jogos.json');
+            jogos = await respJogos.json();
+
+            const respPalpites = await fetch('palpites.json');
+            palpites = await respPalpites.json();
+
+            document.getElementById('loading').style.display = 'none';
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.disabled = false);
+            
+            inicializar();
+            abrirAba('ranking');
+
+        } catch (error) {
+            document.getElementById('loading').innerHTML = 'Erro ao carregar os dados. Certifique-se de estar usando um servidor local (Live Server).';
+        }
+    }
+
+    function abrirAba(abaId) {
+        document.querySelectorAll('.tab-content').forEach(aba => aba.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(abaId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    function obterBandeira(sigla) {
+        return `https://flagcdn.com/w40/${sigla}.png`;
+    }
+
+    function calcularPontos(palpiteA, palpiteB, realA, realB) {
+        if (realA === null || realB === null) return 0;
+        
+        if (palpiteA === realA && palpiteB === realB) return 6;
+
+        let pontos = 0;
+        const resPalpite = Math.sign(palpiteA - palpiteB);
+        const resReal = Math.sign(realA - realB);
+
+        if (resPalpite === resReal) pontos += 3;
+        if (palpiteA === realA) pontos += 1;
+        if (palpiteB === realB) pontos += 1;
+
+        return pontos;
+    }
+
+    function renderizarResultados() {
+        const container = document.getElementById('resultados-container');
+        container.innerHTML = '';
+
+        jogos.forEach(jogo => {
+            const tA = times[jogo.timeA];
+            const tB = times[jogo.timeB];
+            const placarA = jogo.golsA !== null ? jogo.golsA : '-';
+            const placarB = jogo.golsB !== null ? jogo.golsB : '-';
+
+            const card = document.createElement('div');
+            card.className = 'card match';
+            card.innerHTML = `
+                <div class="group-title">${jogo.grupo}</div>
+                <div class="team">
+                    <img src="${obterBandeira(tA.sigla)}" alt="${tA.nome}">
+                    <span>${tA.nome}</span>
+                </div>
+                <div class="score">
+                    <span class="score-input">${placarA}</span> x <span class="score-input">${placarB}</span>
+                </div>
+                <div class="team">
+                    <img src="${obterBandeira(tB.sigla)}" alt="${tB.nome}">
+                    <span>${tB.nome}</span>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function renderizarPalpites() {
+        const container = document.getElementById('palpites-container');
+        container.innerHTML = '';
+
+        jogos.forEach(jogo => {
+            const tA = times[jogo.timeA];
+            const tB = times[jogo.timeB];
+            const palpitesDoJogo = palpites.filter(p => p.jogoId === jogo.id);
+
+            if (palpitesDoJogo.length === 0) return;
+
+            let htmlPalpites = '';
+            palpitesDoJogo.forEach(p => {
+                const pontosGanhos = calcularPontos(p.golsA, p.golsB, jogo.golsA, jogo.golsB);
+                const txtPontos = jogo.golsA !== null ? ` (+${pontosGanhos} pts)` : '';
+                htmlPalpites += `
+                    <div class="palpite-row">
+                        <strong>${p.jogador}:</strong> ${p.golsA} x ${p.golsB} ${txtPontos}
+                    </div>
+                `;
+            });
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="group-title">${jogo.grupo} | ${tA.nome} vs ${tB.nome}</div>
+                ${htmlPalpites}
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function renderizarRanking() {
+        const pontosPorJogador = {};
+
+        jogadoresOficiais.forEach(jogador => {
+            pontosPorJogador[jogador] = 0;
+        });
+
+        palpites.forEach(p => {
+            if (pontosPorJogador[p.jogador] !== undefined) {
+                const jogo = jogos.find(j => j.id === p.jogoId);
+                if (jogo && jogo.golsA !== null && jogo.golsB !== null) {
+                    pontosPorJogador[p.jogador] += calcularPontos(p.golsA, p.golsB, jogo.golsA, jogo.golsB);
+                }
+            }
+        });
+
+        const rankingArray = Object.keys(pontosPorJogador).map(jogador => {
+            return { jogador: jogador, pontos: pontosPorJogador[jogador] };
+        });
+
+        rankingArray.sort((a, b) => b.pontos - a.pontos);
+
+        const tbody = document.getElementById('ranking-body');
+        tbody.innerHTML = '';
+
+        rankingArray.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1}º</td>
+                <td><strong>${item.jogador}</strong></td>
+                <td>${item.pontos}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function inicializar() {
+        renderizarResultados();
+        renderizarPalpites();
+        renderizarRanking();
+    }
+
+    window.onload = carregarDados;
+</script>
+</body>
+</html>
