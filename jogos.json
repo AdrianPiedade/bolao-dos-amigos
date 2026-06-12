@@ -1,6 +1,6 @@
 [
   { "id": 1, "data": "2026-06-11", "grupo": "Grupo A", "timeA": "MEX", "timeB": "RSA", "golsA": 2, "golsB": 0 },
-  { "id": 2, "data": "2026-06-11", "grupo": "Grupo A", "timeA": "KOR", "timeB": "CZE", "golsA": null, "golsB": null },
+  { "id": 2, "data": "2026-06-11", "grupo": "Grupo A", "timeA": "KOR", "timeB": "CZE", "golsA": 2, "golsB": 1 },
   { "id": 7, "data": "2026-06-12", "grupo": "Grupo B", "timeA": "CAN", "timeB": "BIH", "golsA": null, "golsB": null },
   { "id": 8, "data": "2026-06-12", "grupo": "Grupo B", "timeA": "QAT", "timeB": "SUI", "golsA": null, "golsB": null },
   { "id": 19, "data": "2026-06-12", "grupo": "Grupo D", "timeA": "USA", "timeB": "PAR", "golsA": null, "golsB": null },
