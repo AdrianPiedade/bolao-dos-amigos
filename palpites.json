@@ -223,5 +223,8 @@
   { "jogador": "Adrian", "jogoId": 37, "golsA": 2, "golsB": 0 },
   { "jogador": "Adrian", "jogoId": 49, "golsA": 3, "golsB": 1 },
   { "jogador": "Adrian", "jogoId": 50, "golsA": 0, "golsB": 3 },
-  { "jogador": "Adrian", "jogoId": 55, "golsA": 2, "golsB": 1 }
+  { "jogador": "Adrian", "jogoId": 55, "golsA": 2, "golsB": 1 },
+  { "jogador": "Sagui", "jogoId": 8, "golsA": 1, "golsB": 2 },
+  { "jogador": "Sagui", "jogoId": 14, "golsA": 2, "golsB": 1 },
+  { "jogador": "Sagui", "jogoId": 13, "golsA": 0, "golsB": 2 }
 ]
