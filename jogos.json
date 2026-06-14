@@ -6,7 +6,7 @@
   { "id": 19, "data": "2026-06-12", "grupo": "Grupo D", "timeA": "USA", "timeB": "PAR", "golsA": 4, "golsB": 1 },
   { "id": 13, "data": "2026-06-13", "grupo": "Grupo C", "timeA": "HAI", "timeB": "SCO", "golsA": 0, "golsB": 1 },
   { "id": 14, "data": "2026-06-13", "grupo": "Grupo C", "timeA": "BRA", "timeB": "MAR", "golsA": 1, "golsB": 1 },
-  { "id": 20, "data": "2026-06-13", "grupo": "Grupo D", "timeA": "AUS", "timeB": "TUR", "golsA": null, "golsB": null },
+  { "id": 20, "data": "2026-06-13", "grupo": "Grupo D", "timeA": "AUS", "timeB": "TUR", "golsA": 2, "golsB": 0 },
   { "id": 25, "data": "2026-06-14", "grupo": "Grupo E", "timeA": "CIV", "timeB": "ECU", "golsA": null, "golsB": null },
   { "id": 26, "data": "2026-06-14", "grupo": "Grupo E", "timeA": "GER", "timeB": "CUW", "golsA": null, "golsB": null },
   { "id": 31, "data": "2026-06-14", "grupo": "Grupo F", "timeA": "NED", "timeB": "JPN", "golsA": null, "golsB": null },
