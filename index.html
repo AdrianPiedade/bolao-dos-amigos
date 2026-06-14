@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bolão dos Amigos</title>
+<title>Bolão da Família</title>
 <style>
     :root {
         --primary-color: #1a5a32;
@@ -157,6 +157,55 @@
         font-weight: bold;
     }
 
+    .player-selector {
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+
+    .player-label {
+        background-color: #e0e0e0;
+        padding: 8px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        white-space: nowrap;
+        font-size: 14px;
+        user-select: none;
+        transition: 0.2s;
+    }
+
+    .player-radio:checked + .player-label {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: bold;
+    }
+
+    .player-radio {
+        display: none;
+    }
+
+    .user-guess {
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px dashed #ccc;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .user-guess strong {
+        color: var(--primary-color);
+        font-size: 16px;
+    }
+
+    .no-guess {
+        color: #999;
+        font-style: italic;
+    }
+
     @media (max-width: 600px) {
         .tab-btn {
             font-size: 14px;
@@ -205,6 +254,7 @@
 
 <div id="resultados" class="tab-content">
     <h2>Resultados Oficiais</h2>
+    <div id="filtro-jogadores" class="player-selector"></div>
     <div id="resultados-container"></div>
 </div>
 
@@ -267,7 +317,29 @@
         return pontos;
     }
 
-    function renderizarResultados() {
+    function renderizarFiltroJogadores() {
+        const container = document.getElementById('filtro-jogadores');
+        let html = `
+            <input type="radio" id="filter-geral" name="player-filter" value="" class="player-radio" checked onchange="atualizarFiltroResultados()">
+            <label for="filter-geral" class="player-label">Geral</label>
+        `;
+        
+        jogadoresOficiais.forEach(jogador => {
+            html += `
+                <input type="radio" id="filter-${jogador}" name="player-filter" value="${jogador}" class="player-radio" onchange="atualizarFiltroResultados()">
+                <label for="filter-${jogador}" class="player-label">${jogador}</label>
+            `;
+        });
+        
+        container.innerHTML = html;
+    }
+
+    function atualizarFiltroResultados() {
+        const selecionado = document.querySelector('input[name="player-filter"]:checked').value;
+        renderizarResultados(selecionado);
+    }
+
+    function renderizarResultados(jogadorSelecionado = '') {
         const container = document.getElementById('resultados-container');
         container.innerHTML = '';
 
@@ -277,10 +349,34 @@
             const placarA = jogo.golsA !== null ? jogo.golsA : '-';
             const placarB = jogo.golsB !== null ? jogo.golsB : '-';
 
+            let htmlPalpite = '';
+            
+            if (jogadorSelecionado !== '') {
+                const palpite = palpites.find(p => p.jogoId === jogo.id && p.jogador === jogadorSelecionado);
+                if (palpite) {
+                    let infoPontos = '';
+                    if (jogo.golsA !== null && jogo.golsB !== null) {
+                        const pts = calcularPontos(palpite.golsA, palpite.golsB, jogo.golsA, jogo.golsB);
+                        infoPontos = ` | <strong>+${pts} pts</strong>`;
+                    }
+                    htmlPalpite = `
+                        <div class="user-guess">
+                            Palpite: ${palpite.golsA} x ${palpite.golsB}${infoPontos}
+                        </div>
+                    `;
+                } else {
+                    htmlPalpite = `
+                        <div class="user-guess no-guess">
+                            Sem palpite registrado
+                        </div>
+                    `;
+                }
+            }
+
             const card = document.createElement('div');
             card.className = 'card match';
             card.innerHTML = `
-                <div class="group-title">${jogo.grupo}</div>
+                <div class="group-title">${jogo.data} | ${jogo.grupo}</div>
                 <div class="team">
                     <img src="${obterBandeira(tA.sigla)}" alt="${tA.nome}">
                     <span>${tA.nome}</span>
@@ -292,6 +388,7 @@
                     <img src="${obterBandeira(tB.sigla)}" alt="${tB.nome}">
                     <span>${tB.nome}</span>
                 </div>
+                ${htmlPalpite}
             `;
             container.appendChild(card);
         });
@@ -322,7 +419,7 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <div class="group-title">${jogo.grupo} | ${tA.nome} vs ${tB.nome}</div>
+                <div class="group-title">${jogo.data} | ${jogo.grupo} | ${tA.nome} vs ${tB.nome}</div>
                 ${htmlPalpites}
             `;
             container.appendChild(card);
@@ -366,6 +463,7 @@
     }
 
     function inicializar() {
+        renderizarFiltroJogadores();
         renderizarResultados();
         renderizarPalpites();
         renderizarRanking();
