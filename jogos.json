@@ -17,7 +17,7 @@
   { "id": 44, "data": "2026-06-15", "grupo": "Grupo H", "timeA": "ESP", "timeB": "CPV", "golsA": 0, "golsB": 0 },
   { "id": 3, "data": "2026-06-16", "grupo": "Grupo A", "timeA": "MEX", "timeB": "KOR", "golsA": null, "golsB": null },
   { "id": 4, "data": "2026-06-16", "grupo": "Grupo A", "timeA": "CZE", "timeB": "RSA", "golsA": null, "golsB": null },
-  { "id": 49, "data": "2026-06-16", "grupo": "Grupo I", "timeA": "FRA", "timeB": "SEN", "golsA": null, "golsB": null },
+  { "id": 49, "data": "2026-06-16", "grupo": "Grupo I", "timeA": "FRA", "timeB": "SEN", "golsA": 3, "golsB": 1 },
   { "id": 50, "data": "2026-06-16", "grupo": "Grupo I", "timeA": "IRQ", "timeB": "NOR", "golsA": null, "golsB": null },
   { "id": 55, "data": "2026-06-16", "grupo": "Grupo J", "timeA": "ARG", "timeB": "ALG", "golsA": null, "golsB": null },
   { "id": 56, "data": "2026-06-16", "grupo": "Grupo J", "timeA": "AUT", "timeB": "JOR", "golsA": null, "golsB": null },
