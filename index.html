@@ -268,7 +268,7 @@
     let jogos = [];
     let palpites = [];
     
-    const API_KEY = "bf9be303fa4843ef80552da3a191866e";
+    const API_KEY = "INSIRA_AQUI_SUA_CHAVE_DO_FOOTBALL_DATA";
 
     async function carregarDados() {
         try {
@@ -315,8 +315,19 @@
             abrirAba('ranking');
 
         } catch (error) {
-            document.getElementById('loading').innerHTML = 'Erro ao sincronizar com a API da FIFA. Verifique sua chave de acesso API_KEY.';
+            document.getElementById('loading').innerHTML = 'Erro ao sincronizar com a API da FIFA ou carregar arquivos.';
         }
+    }
+
+    function obterChaveTime(identificador) {
+        if (!identificador) return null;
+        if (times[identificador]) return identificador;
+        
+        for (let chave in times) {
+            if (times[chave].nome.toLowerCase() === identificador.toLowerCase()) return chave;
+            if (times[chave].sigla.toLowerCase() === identificador.toLowerCase()) return chave;
+        }
+        return identificador;
     }
 
     function abrirAba(abaId) {
@@ -327,20 +338,19 @@
         event.currentTarget.classList.add('active');
     }
 
-    function obterBandeira(sigla, tla) {
+    function obterBandeira(sigla) {
         if (sigla) return `https://flagcdn.com/w40/${sigla.toLowerCase()}.png`;
         return `https://images.tcdn.com.br/img/img_prod/adicionar_imagem_placeholder.png`;
     }
 
     function buscarSiglaPorTLA(tla) {
-        if (times[tla]) return times[tla].sigla;
-        const chaveEncontrada = Object.keys(times).find(key => times[key].nome.toLowerCase() === tla.toLowerCase());
-        return chaveEncontrada ? times[chaveEncontrada].sigla : null;
+        const chave = obterChaveTime(tla);
+        return times[chave] ? times[chave].sigla : null;
     }
 
     function buscarNomePorTLA(tla, nomePadrao) {
-        if (times[tla]) return times[tla].nome;
-        return nomePadrao;
+        const chave = obterChaveTime(tla);
+        return times[chave] ? times[chave].nome : nomePadrao;
     }
 
     function calcularPontos(palpiteA, palpiteB, realA, realB) {
@@ -354,7 +364,7 @@
 
         if (resPalpite === resReal) pontos += 3;
         if (palpiteA === realA) pontos += 1;
-        if (palpiteB === realB) osteoporosis = 1; pontos += 1;
+        if (palpiteB === realB) pontos += 1;
 
         return pontos;
     }
@@ -386,6 +396,9 @@
         container.innerHTML = '';
 
         jogos.forEach(jogo => {
+            const chaveA = obterChaveTime(jogo.timeA);
+            const chaveB = obterChaveTime(jogo.timeB);
+            
             const siglaA = buscarSiglaPorTLA(jogo.timeA);
             const siglaB = buscarSiglaPorTLA(jogo.timeB);
             const nomeA = buscarNomePorTLA(jogo.timeA, jogo.nomeTimeA);
@@ -397,16 +410,29 @@
             let htmlPalpite = '';
             
             if (jogadorSelecionado !== '') {
-                const palpite = palpites.find(p => p.jogoId === jogo.id && p.jogador === jogadorSelecionado);
+                const palpite = palpites.find(p => 
+                    p.jogador === jogadorSelecionado && 
+                    ((p.timeA === chaveA && p.timeB === chaveB) || (p.timeA === chaveB && p.timeB === chaveA))
+                );
+                
                 if (palpite) {
+                    let pGolsHome, pGolsAway;
+                    if (palpite.timeA === chaveA) {
+                        pGolsHome = palpite.golsA;
+                        pGolsAway = palpite.golsB;
+                    } else {
+                        pGolsHome = palpite.golsB;
+                        pGolsAway = palpite.golsA;
+                    }
+
                     let infoPontos = '';
                     if (jogo.golsA !== null && jogo.golsB !== null) {
-                        const pts = calcularPontos(palpite.golsA, palpite.golsB, jogo.golsA, jogo.golsB);
+                        const pts = calcularPontos(pGolsHome, pGolsAway, jogo.golsA, jogo.golsB);
                         infoPontos = ` | <strong>+${pts} pts</strong>`;
                     }
                     htmlPalpite = `
                         <div class="user-guess">
-                            Palpite: ${palpite.golsA} x ${palpite.golsB}${infoPontos}
+                            Palpite: ${pGolsHome} x ${pGolsAway}${infoPontos}
                         </div>
                     `;
                 } else {
@@ -423,14 +449,14 @@
             card.innerHTML = `
                 <div class="group-title">${jogo.data} | ${jogo.grupo}</div>
                 <div class="team">
-                    <img src="${obterBandeira(siglaA, jogo.timeA)}" alt="${nomeA}">
+                    <img src="${obterBandeira(siglaA)}" alt="${nomeA}">
                     <span>${nomeA}</span>
                 </div>
                 <div class="score">
                     <span class="score-input">${placarA}</span> x <span class="score-input">${placarB}</span>
                 </div>
                 <div class="team">
-                    <img src="${obterBandeira(siglaB, jogo.timeB)}" alt="${nomeB}">
+                    <img src="${obterBandeira(siglaB)}" alt="${nomeB}">
                     <span>${nomeB}</span>
                 </div>
                 ${htmlPalpite}
@@ -444,19 +470,34 @@
         container.innerHTML = '';
 
         jogos.forEach(jogo => {
+            const chaveA = obterChaveTime(jogo.timeA);
+            const chaveB = obterChaveTime(jogo.timeB);
             const nomeA = buscarNomePorTLA(jogo.timeA, jogo.nomeTimeA);
             const nomeB = buscarNomePorTLA(jogo.timeB, jogo.nomeTimeB);
-            const palpitesDoJogo = palpites.filter(p => p.jogoId === jogo.id);
+            
+            const palpitesDoJogo = palpites.filter(p => 
+                (p.timeA === chaveA && p.timeB === chaveB) || 
+                (p.timeA === chaveB && p.timeB === chaveA)
+            );
 
             if (palpitesDoJogo.length === 0) return;
 
             let htmlPalpites = '';
             palpitesDoJogo.forEach(p => {
-                const pontosGanhos = calcularPontos(p.golsA, p.golsB, jogo.golsA, jogo.golsB);
+                let pGolsHome, pGolsAway;
+                if (p.timeA === chaveA) {
+                    pGolsHome = p.golsA;
+                    pGolsAway = p.golsB;
+                } else {
+                    pGolsHome = p.golsB;
+                    pGolsAway = p.golsA;
+                }
+
+                const pontosGanhos = calcularPontos(pGolsHome, pGolsAway, jogo.golsA, jogo.golsB);
                 const txtPontos = jogo.golsA !== null ? ` (+${pontosGanhos} pts)` : '';
                 htmlPalpites += `
                     <div class="palpite-row">
-                        <strong>${p.jogador}:</strong> ${p.golsA} x ${p.golsB} ${txtPontos}
+                        <strong>${p.jogador}:</strong> ${pGolsHome} x ${pGolsAway} ${txtPontos}
                     </div>
                 `;
             });
@@ -479,10 +520,25 @@
         });
 
         palpites.forEach(p => {
-            if (pontosPorJogador[p.jogador] !== undefined) {
-                const jogo = jogos.find(j => j.id === p.jogoId);
-                if (jogo && jogo.golsA !== null && jogo.golsB !== null) {
-                    pontosPorJogador[p.jogador] += calcularPontos(p.golsA, p.golsB, jogo.golsA, jogo.golsB);
+            const jogo = jogos.find(j => {
+                const cA = obterChaveTime(j.timeA);
+                const cB = obterChaveTime(j.timeB);
+                return (p.timeA === cA && p.timeB === cB) || (p.timeA === cB && p.timeB === cA);
+            });
+
+            if (jogo && jogo.golsA !== null && jogo.golsB !== null) {
+                let pGolsHome, pGolsAway;
+                const cA = obterChaveTime(jogo.timeA);
+                if (p.timeA === cA) {
+                    pGolsHome = p.golsA;
+                    pGolsAway = p.golsB;
+                } else {
+                    pGolsHome = p.golsB;
+                    pGolsAway = p.golsA;
+                }
+                
+                if (pontosPorJogador[p.jogador] !== undefined) {
+                    pontosPorJogador[p.jogador] += calcularPontos(pGolsHome, pGolsAway, jogo.golsA, jogo.golsB);
                 }
             }
         });
