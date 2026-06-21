@@ -281,7 +281,10 @@
             const respPalpites = await fetch('palpites.json');
             palpites = await respPalpites.json();
 
-            const responseAPI = await fetch('https://api.football-data.org/v4/competitions/WC/matches', {
+            const urlAlvo = 'https://api.football-data.org/v4/competitions/WC/matches';
+            const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(urlAlvo);
+
+            const responseAPI = await fetch(proxyUrl, {
                 headers: { 'X-Auth-Token': API_KEY }
             });
             const dadosAPI = await responseAPI.json();
