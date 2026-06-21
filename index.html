@@ -103,6 +103,9 @@
         font-size: 24px;
         font-weight: bold;
         padding: 0 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
     .score-input {
@@ -112,6 +115,7 @@
         font-weight: bold;
         min-width: 30px;
         text-align: center;
+        border: 1px solid #ccc;
     }
 
     .group-title {
@@ -230,7 +234,7 @@
     <button class="tab-btn" onclick="abrirAba('resultados')" id="btn-resultados" disabled>Resultados</button>
 </div>
 
-<div id="loading">Carregando dados do bolão...</div>
+<div id="loading">Carregando dados oficiais e palpites em tempo real...</div>
 
 <div id="ranking" class="tab-content">
     <h2>Classificação Atual</h2>
@@ -263,6 +267,8 @@
     let times = {};
     let jogos = [];
     let palpites = [];
+    
+    const API_KEY = "bf9be303fa4843ef80552da3a191866e";
 
     async function carregarDados() {
         try {
@@ -272,11 +278,32 @@
             const respTimes = await fetch('times.json');
             times = await respTimes.json();
 
-            const respJogos = await fetch('jogos.json');
-            jogos = await respJogos.json();
-
             const respPalpites = await fetch('palpites.json');
             palpites = await respPalpites.json();
+
+            const responseAPI = await fetch('https://api.football-data.org/v4/competitions/WC/matches', {
+                headers: { 'X-Auth-Token': API_KEY }
+            });
+            const dadosAPI = await responseAPI.json();
+
+            const partidasCopa = dadosAPI.matches.filter(m => m.stage === "GROUP_STAGE");
+            
+            partidasCopa.sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
+
+            jogos = partidasCopa.map((m, index) => {
+                return {
+                    id: index + 1,
+                    apiMatchId: m.id,
+                    data: new Date(m.utcDate).toLocaleDateString('pt-BR'),
+                    grupo: `Grupo ${m.group ? m.group.replace('GROUP_', '') : '-'}`,
+                    timeA: m.homeTeam.tla || m.homeTeam.name,
+                    timeB: m.awayTeam.tla || m.awayTeam.name,
+                    nomeTimeA: m.homeTeam.name,
+                    nomeTimeB: m.awayTeam.name,
+                    golsA: m.score.fullTime.home !== null ? m.score.fullTime.home : null,
+                    golsB: m.score.fullTime.away !== null ? m.score.fullTime.away : null
+                };
+            });
 
             document.getElementById('loading').style.display = 'none';
             document.querySelectorAll('.tab-btn').forEach(btn => btn.disabled = false);
@@ -285,7 +312,7 @@
             abrirAba('ranking');
 
         } catch (error) {
-            document.getElementById('loading').innerHTML = 'Erro ao carregar os dados. Certifique-se de estar usando um servidor local (Live Server).';
+            document.getElementById('loading').innerHTML = 'Erro ao sincronizar com a API da FIFA. Verifique sua chave de acesso API_KEY.';
         }
     }
 
@@ -297,8 +324,20 @@
         event.currentTarget.classList.add('active');
     }
 
-    function obterBandeira(sigla) {
-        return `https://flagcdn.com/w40/${sigla}.png`;
+    function obterBandeira(sigla, tla) {
+        if (sigla) return `https://flagcdn.com/w40/${sigla.toLowerCase()}.png`;
+        return `https://images.tcdn.com.br/img/img_prod/adicionar_imagem_placeholder.png`;
+    }
+
+    function buscarSiglaPorTLA(tla) {
+        if (times[tla]) return times[tla].sigla;
+        const chaveEncontrada = Object.keys(times).find(key => times[key].nome.toLowerCase() === tla.toLowerCase());
+        return chaveEncontrada ? times[chaveEncontrada].sigla : null;
+    }
+
+    function buscarNomePorTLA(tla, nomePadrao) {
+        if (times[tla]) return times[tla].nome;
+        return nomePadrao;
     }
 
     function calcularPontos(palpiteA, palpiteB, realA, realB) {
@@ -312,7 +351,7 @@
 
         if (resPalpite === resReal) pontos += 3;
         if (palpiteA === realA) pontos += 1;
-        if (palpiteB === realB) pontos += 1;
+        if (palpiteB === realB) osteoporosis = 1; pontos += 1;
 
         return pontos;
     }
@@ -344,8 +383,11 @@
         container.innerHTML = '';
 
         jogos.forEach(jogo => {
-            const tA = times[jogo.timeA];
-            const tB = times[jogo.timeB];
+            const siglaA = buscarSiglaPorTLA(jogo.timeA);
+            const siglaB = buscarSiglaPorTLA(jogo.timeB);
+            const nomeA = buscarNomePorTLA(jogo.timeA, jogo.nomeTimeA);
+            const nomeB = buscarNomePorTLA(jogo.timeB, jogo.nomeTimeB);
+
             const placarA = jogo.golsA !== null ? jogo.golsA : '-';
             const placarB = jogo.golsB !== null ? jogo.golsB : '-';
 
@@ -378,15 +420,15 @@
             card.innerHTML = `
                 <div class="group-title">${jogo.data} | ${jogo.grupo}</div>
                 <div class="team">
-                    <img src="${obterBandeira(tA.sigla)}" alt="${tA.nome}">
-                    <span>${tA.nome}</span>
+                    <img src="${obterBandeira(siglaA, jogo.timeA)}" alt="${nomeA}">
+                    <span>${nomeA}</span>
                 </div>
                 <div class="score">
                     <span class="score-input">${placarA}</span> x <span class="score-input">${placarB}</span>
                 </div>
                 <div class="team">
-                    <img src="${obterBandeira(tB.sigla)}" alt="${tB.nome}">
-                    <span>${tB.nome}</span>
+                    <img src="${obterBandeira(siglaB, jogo.timeB)}" alt="${nomeB}">
+                    <span>${nomeB}</span>
                 </div>
                 ${htmlPalpite}
             `;
@@ -399,8 +441,8 @@
         container.innerHTML = '';
 
         jogos.forEach(jogo => {
-            const tA = times[jogo.timeA];
-            const tB = times[jogo.timeB];
+            const nomeA = buscarNomePorTLA(jogo.timeA, jogo.nomeTimeA);
+            const nomeB = buscarNomePorTLA(jogo.timeB, jogo.nomeTimeB);
             const palpitesDoJogo = palpites.filter(p => p.jogoId === jogo.id);
 
             if (palpitesDoJogo.length === 0) return;
@@ -419,7 +461,7 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <div class="group-title">${jogo.data} | ${jogo.grupo} | ${tA.nome} vs ${tB.nome}</div>
+                <div class="group-title">${jogo.data} | ${jogo.grupo} | ${nomeA} vs ${nomeB}</div>
                 ${htmlPalpites}
             `;
             container.appendChild(card);
