@@ -321,6 +321,17 @@
 
     function obterChaveTime(identificador) {
         if (!identificador) return null;
+        
+        const correcoesAPI = {
+            "URY": "URU",
+            "Uruguay": "URU",
+            "ZAF": "RSA",
+            "South Africa": "RSA",
+            "CZE": "CZE",
+            "Czechia": "CZE"
+        };
+        
+        if (correcoesAPI[identificador]) return correcoesAPI[identificador];
         if (times[identificador]) return identificador;
         
         for (let chave in times) {
