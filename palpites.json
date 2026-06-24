@@ -773,7 +773,7 @@
   { "jogador": "Banana", "timeA": "SUI", "timeB": "CAN", "golsA": 2, "golsB": 2 },
   { "jogador": "Banana", "timeA": "BIH", "timeB": "QAT", "golsA": 1, "golsB": 1 },
   { "jogador": "Banana", "timeA": "MAR", "timeB": "HAI", "golsA": 3, "golsB": 0 },
-  { "jogador": "Banana", "timeA": "SCO", "timeB": "BRA", "golsA": 0, "golsB": 4 },
+  { "jogador": "Banana", "timeA": "SCO", "timeB": "BRA", "golsA": 1, "golsB": 4 },
   { "jogador": "Banana", "timeA": "RSA", "timeB": "KOR", "golsA": 1, "golsB": 1 },
   { "jogador": "Banana", "timeA": "CZE", "timeB": "MEX", "golsA": 0, "golsB": 2 },
   { "jogador": "Banana", "timeA": "CUW", "timeB": "CIV", "golsA": 2, "golsB": 2 },
