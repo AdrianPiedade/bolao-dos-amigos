@@ -70,5 +70,12 @@
   { "id": 65, "data": "2026-06-27", "grupo": "Grupo K", "timeA": "COL", "timeB": "POR", "golsA": null, "golsB": null },
   { "id": 66, "data": "2026-06-27", "grupo": "Grupo K", "timeA": "COD", "timeB": "UZB", "golsA": null, "golsB": null },
   { "id": 71, "data": "2026-06-27", "grupo": "Grupo L", "timeA": "CRO", "timeB": "GHA", "golsA": null, "golsB": null },
-  { "id": 72, "data": "2026-06-27", "grupo": "Grupo L", "timeA": "PAN", "timeB": "ENG", "golsA": null, "golsB": null }
+  { "id": 72, "data": "2026-06-27", "grupo": "Grupo L", "timeA": "PAN", "timeB": "ENG", "golsA": null, "golsB": null },
+  { "id": 73, "data": "2026-06-28", "grupo": "16 Avos", "timeA": "RSA", "timeB": "CAN", "golsA": null, "golsB": null },
+  { "id": 74, "data": "2026-06-29", "grupo": "16 Avos", "timeA": "BRA", "timeB": "JPN", "golsA": null, "golsB": null },
+  { "id": 75, "data": "2026-06-29", "grupo": "16 Avos", "timeA": "GER", "timeB": "PAR", "golsA": null, "golsB": null },
+  { "id": 76, "data": "2026-06-29", "grupo": "16 Avos", "timeA": "NED", "timeB": "MAR", "golsA": null, "golsB": null },
+  { "id": 77, "data": "2026-06-30", "grupo": "16 Avos", "timeA": "CIV", "timeB": "NOR", "golsA": null, "golsB": null },
+  { "id": 78, "data": "2026-06-30", "grupo": "16 Avos", "timeA": "FRA", "timeB": "SWE", "golsA": null, "golsB": null },
+  { "id": 79, "data": "2026-06-30", "grupo": "16 Avos", "timeA": "MEX", "timeB": "ECU", "golsA": null, "golsB": null }
 ]
