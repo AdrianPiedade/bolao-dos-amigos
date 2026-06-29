@@ -993,7 +993,7 @@
   { "jogador": "Antônio", "timeA": "COL", "timeB": "POR", "golsA": 1, "golsB": 2 },
   { "jogador": "Antônio", "timeA": "COD", "timeB": "UZB", "golsA": 1, "golsB": 0 },
   { "jogador": "Antônio", "timeA": "ALG", "timeB": "AUT", "golsA": 1, "golsB": 2 },
-  { "jogador": "Antônio", "timeA": "JOR", "timeB": "ARG", "golsA": 3, "golsB": 0 },
+  { "jogador": "Antônio", "timeA": "JOR", "timeB": "ARG", "golsA": 0, "golsB": 3 },
   { "jogador": "Sagui", "timeA": "EGY", "timeB": "IRN", "golsA": 2, "golsB": 1 },
   { "jogador": "Sagui", "timeA": "NZL", "timeB": "BEL", "golsA": 0, "golsB": 3 },
   { "jogador": "Sagui", "timeA": "PAN", "timeB": "ENG", "golsA": 0, "golsB": 4 },
