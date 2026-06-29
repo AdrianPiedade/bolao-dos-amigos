@@ -316,10 +316,13 @@
 
             jogos = jogosBase.map(jogoLocal => {
                 
-                // Tenta encontrar este jogo na resposta da API para atualizar os golos
                 const jogoAPI = dadosAPI.matches.find(m => {
-                    const homeMatches = m.homeTeam.tla === jogoLocal.timeA || m.homeTeam.name === jogoLocal.timeA;
-                    const awayMatches = m.awayTeam.tla === jogoLocal.timeB || m.awayTeam.name === jogoLocal.timeB;
+                    const apiHomeKey = obterChaveTime(m.homeTeam.tla || m.homeTeam.name);
+                    const apiAwayKey = obterChaveTime(m.awayTeam.tla || m.awayTeam.name);
+                    
+                    const homeMatches = apiHomeKey === jogoLocal.timeA;
+                    const awayMatches = apiAwayKey === jogoLocal.timeB;
+                    
                     return homeMatches && awayMatches;
                 });
 
