@@ -517,6 +517,7 @@
 
                 const pontosGanhos = calcularPontos(pGolsHome, pGolsAway, jogo.golsA, jogo.golsB);
                 const txtPontos = jogo.golsA !== null ? ` (+${pontosGanhos} pts)` : '';
+                
                 htmlPalpites += `
                     <div class="palpite-row">
                         <strong>${p.jogador}:</strong> ${pGolsHome} x ${pGolsAway} ${txtPontos}
@@ -527,7 +528,7 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <div class="group-title">${jogo.data} às ${jogo.hora} | ${jogo.grupo}</div>
+                <div class="group-title">${jogo.data} às ${jogo.hora} | ${jogo.grupo} | ${nomeA} x ${nomeB}</div>
                 ${htmlPalpites}
             `;
             container.appendChild(card);
