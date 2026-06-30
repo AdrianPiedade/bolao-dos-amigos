@@ -289,8 +289,6 @@
     let times = {};
     let jogos = [];
     let palpites = [];
-    
-    const API_KEY = "bf9be303fa4843ef80552da3a191866e";
 
     async function carregarDados() {
         try {
@@ -306,36 +304,18 @@
             const respJogos = await fetch('jogos.json');
             const jogosBase = await respJogos.json();
 
-            const urlAlvo = 'https://api.football-data.org/v4/competitions/WC/matches';
-            const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(urlAlvo);
-
-            const responseAPI = await fetch(proxyUrl, {
-                headers: { 'X-Auth-Token': API_KEY }
-            });
-            const dadosAPI = await responseAPI.json();
-
             jogos = jogosBase.map(jogoLocal => {
-                
-                const jogoAPI = dadosAPI.matches.find(m => {
-                    const apiHomeKey = obterChaveTime(m.homeTeam.tla || m.homeTeam.name);
-                    const apiAwayKey = obterChaveTime(m.awayTeam.tla || m.awayTeam.name);
-                    
-                    const homeMatches = apiHomeKey === jogoLocal.timeA;
-                    const awayMatches = apiAwayKey === jogoLocal.timeB;
-                    
-                    return homeMatches && awayMatches;
-                });
-
                 return {
                     id: jogoLocal.id,
                     data: jogoLocal.data,
+                    hora: jogoLocal.hora,
                     grupo: jogoLocal.grupo,
                     timeA: jogoLocal.timeA,
                     timeB: jogoLocal.timeB,
                     nomeTimeA: buscarNomePorTLA(jogoLocal.timeA, jogoLocal.timeA),
                     nomeTimeB: buscarNomePorTLA(jogoLocal.timeB, jogoLocal.timeB),
-                    golsA: (jogoAPI && jogoAPI.score.fullTime.home !== null) ? jogoAPI.score.fullTime.home : null,
-                    golsB: (jogoAPI && jogoAPI.score.fullTime.away !== null) ? jogoAPI.score.fullTime.away : null
+                    golsA: jogoLocal.golsA,
+                    golsB: jogoLocal.golsB
                 };
             });
 
@@ -346,7 +326,7 @@
             abrirAba('ranking');
 
         } catch (error) {
-            document.getElementById('loading').innerHTML = 'Erro ao sincronizar com a API da FIFA ou carregar arquivos.';
+            document.getElementById('loading').innerHTML = 'Erro ao carregar os arquivos locais.';
         }
     }
 
@@ -547,7 +527,7 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <div class="group-title">${jogo.data} | ${jogo.grupo} | ${nomeA} vs ${nomeB}</div>
+                <div class="group-title">${jogo.data} às ${jogo.hora} | ${jogo.grupo}</div>
                 ${htmlPalpites}
             `;
             container.appendChild(card);
