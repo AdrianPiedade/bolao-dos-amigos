@@ -834,5 +834,38 @@
     "golsA": 1,
     "golsB": 1,
     "status": "finalizado"
+  },
+  {
+    "id": 77,
+    "data": "30/06/2026",
+    "hora": "14:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Costa do Marfim",
+    "timeB": "Noruega",
+    "golsA": 1,
+    "golsB": 2,
+    "status": "finalizado"
+  },
+  {
+    "id": 78,
+    "data": "30/06/2026",
+    "hora": "18:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "França",
+    "timeB": "Suécia",
+    "golsA": 3,
+    "golsB": 0,
+    "status": "finalizado"
+  },
+    {
+    "id": 79,
+    "data": "30/06/2026",
+    "hora": "23:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "México",
+    "timeB": "Equador",
+    "golsA": 2,
+    "golsB": 0,
+    "status": "finalizado"
   }
 ]
