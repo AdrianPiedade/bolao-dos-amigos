@@ -867,5 +867,38 @@
     "golsA": 2,
     "golsB": 0,
     "status": "finalizado"
+  },
+  {
+    "id": 80,
+    "data": "01/07/2026",
+    "hora": "14:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Inglaterra",
+    "timeB": "RD Congo",
+    "golsA": 2,
+    "golsB": 1,
+    "status": "finalizado"
+  },
+  {
+    "id": 81,
+    "data": "01/07/2026",
+    "hora": "18:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Bélgica",
+    "timeB": "Senegal",
+    "golsA":2,
+    "golsB": 2,
+    "status": "finalizado"
+  },
+  {
+    "id": 82,
+    "data": "01/07/2026",
+    "hora": "22:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Estados Unidos",
+    "timeB": "Bósnia e Herzegovina",
+    "golsA": 2,
+    "golsB": 0,
+    "status": "finalizado"
   }
 ]
