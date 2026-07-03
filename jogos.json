@@ -900,5 +900,38 @@
     "golsA": 2,
     "golsB": 0,
     "status": "finalizado"
+  },
+  {
+    "id": 83,
+    "data": "02/07/2026",
+    "hora": "15:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Espanha",
+    "timeB": "Áustria",
+    "golsA": 3,
+    "golsB": 0,
+    "status": "finalizado"
+  },
+  {
+    "id": 84,
+    "data": "02/07/2026",
+    "hora": "18:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Portugal",
+    "timeB": "Croácia",
+    "golsA": 2,
+    "golsB": 1,
+    "status": "finalizado"
+  },
+  {
+    "id": 85,
+    "data": "03/07/2026",
+    "hora": "00:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Suíça",
+    "timeB": "Argélia",
+    "golsA": 2,
+    "golsB": 0,
+    "status": "finalizado"
   }
 ]
