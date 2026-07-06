@@ -933,5 +933,71 @@
     "golsA": 2,
     "golsB": 0,
     "status": "finalizado"
+  },
+  {
+    "id": 86,
+    "data": "03/07/2026",
+    "hora": "14:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Austrália",
+    "timeB": "Egito",
+    "golsA": 1,
+    "golsB": 1,
+    "status": "finalizado"
+  },
+  {
+    "id": 87,
+    "data": "03/07/2026",
+    "hora": "18:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Argentina",
+    "timeB": "Cabo Verde",
+    "golsA": 1,
+    "golsB": 1,
+    "status": "finalizado"
+  },
+  {
+    "id": 88,
+    "data": "03/07/2026",
+    "hora": "22:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Colômbia",
+    "timeB": "Gana",
+    "golsA": 1,
+    "golsB": 0,
+    "status": "finalizado"
+  },
+  {
+    "id": 89,
+    "data": "04/07/2026",
+    "hora": "15:00",
+    "grupo": "16 Avos de Final",
+    "timeA": "Canadá",
+    "timeB": "Marrocos",
+    "golsA": 0,
+    "golsB": 3,
+    "status": "finalizado"
+  },
+  {
+    "id": 90,
+    "data": "04/07/2026",
+    "hora": "18:00",
+    "grupo": "Oitavas de Final",
+    "timeA": "Paraguai",
+    "timeB": "França",
+    "golsA": 0,
+    "golsB": 1,
+    "status": "finalizado"
+  },
+  {
+    "id": 91,
+    "data": "05/07/2026",
+    "hora": "17:00",
+    "grupo": "Oitavas de Final",
+    "timeA": "Brasil",
+    "timeB": "Noruega",
+    "golsA": 1,
+    "golsB": 2,
+    "status": "finalizado"
   }
 ]
