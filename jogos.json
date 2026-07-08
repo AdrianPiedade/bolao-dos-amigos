@@ -1021,5 +1021,38 @@
     "golsA": 0,
     "golsB": 1,
     "status": "finalizado"
+  },
+  {
+    "id": 94,
+    "data": "06/07/2026",
+    "hora": "18:00",
+    "grupo": "Oitavas de Final",
+    "timeA": "Estados Unidos",
+    "timeB": "Bélgica",
+    "golsA": 1,
+    "golsB": 4,
+    "status": "finalizado"
+  },
+  {
+    "id": 95,
+    "data": "07/07/2026",
+    "hora": "13:00",
+    "grupo": "Oitavas de Final",
+    "timeA": "Argentina",
+    "timeB": "Egito",
+    "golsA": 3,
+    "golsB": 2,
+    "status": "finalizado"
+  },
+  {
+    "id": 96,
+    "data": "07/07/2026",
+    "hora": "15:00",
+    "grupo": "Oitavas de Final",
+    "timeA": "Suíça",
+    "timeB": "Colômbia",
+    "golsA": 0,
+    "golsB": 0,
+    "status": "finalizado"
   }
 ]
