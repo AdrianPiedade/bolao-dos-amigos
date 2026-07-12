@@ -1054,5 +1054,49 @@
     "golsA": 0,
     "golsB": 0,
     "status": "finalizado"
+  },
+  {
+    "id": 97,
+    "data": "09/07/2026",
+    "hora": "15:00",
+    "grupo": "Quartas de Final",
+    "timeA": "França",
+    "timeB": "Marrocos",
+    "golsA": 2,
+    "golsB": 0,
+    "status": "finalizado"
+  },
+  {
+    "id": 98,
+    "data": "10/07/2026",
+    "hora": "15:00",
+    "grupo": "Quartas de Final",
+    "timeA": "Espanha",
+    "timeB": "Bélgica",
+    "golsA": 2,
+    "golsB": 1,
+    "status": "finalizado"
+  },
+  {
+    "id": 99,
+    "data": "11/07/2026",
+    "hora": "18:00",
+    "grupo": "Quartas de Final",
+    "timeA": "Noruega",
+    "timeB": "Inglaterra",
+    "golsA": 1,
+    "golsB": 1,
+    "status": "finalizado"
+  },
+  {
+    "id": 100,
+    "data": "11/07/2026",
+    "hora": "20:00",
+    "grupo": "Quartas de Final",
+    "timeA": "Argentina",
+    "timeB": "Suíça",
+    "golsA": 1,
+    "golsB": 1,
+    "status": "finalizado"
   }
 ]
