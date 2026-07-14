@@ -322,7 +322,7 @@
             document.getElementById('loading').style.display = 'none';
             document.querySelectorAll('.tab-btn').forEach(btn => btn.disabled = false);
             
-            inicializar();
+            await inicializar();
             abrirAba('ranking');
 
         } catch (error) {
@@ -535,7 +535,7 @@
         });
     }
 
-    function renderizarRanking() {
+    async function renderizarRanking() {
         const pontosPorJogador = {};
 
         jogadoresOficiais.forEach(jogador => {
@@ -566,11 +566,27 @@
             }
         });
 
+        let bonus = {};
+        try {
+            bonus = await carregarBonus();
+        } catch (error) {
+            bonus = {};
+        }
+
         const rankingArray = Object.keys(pontosPorJogador).map(jogador => {
-            return { jogador: jogador, pontos: pontosPorJogador[jogador] };
+            const pontosNormais = pontosPorJogador[jogador];
+            const pontosExtras = bonus[jogador] || 0;
+            const pontosTotais = pontosNormais + pontosExtras;
+
+            return { 
+                jogador: jogador, 
+                pontos: pontosNormais, 
+                extras: pontosExtras, 
+                total: pontosTotais 
+            };
         });
 
-        rankingArray.sort((a, b) => b.pontos - a.pontos);
+        rankingArray.sort((a, b) => b.total - a.total);
 
         const tbody = document.getElementById('ranking-body');
         tbody.innerHTML = '';
@@ -580,17 +596,17 @@
             tr.innerHTML = `
                 <td>${index + 1}º</td>
                 <td><strong>${item.jogador}</strong></td>
-                <td>${item.pontos}</td>
+                <td>${item.pontos} pontos ( + ${item.extras} ) &nbsp;&nbsp;&nbsp; <strong>${item.total}</strong></td>
             `;
             tbody.appendChild(tr);
         });
     }
 
-    function inicializar() {
+    async function inicializar() {
         renderizarFiltroJogadores();
         renderizarResultados();
         renderizarPalpites();
-        renderizarRanking();
+        await renderizarRanking();
     }
 
     window.onload = carregarDados;
