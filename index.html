@@ -289,6 +289,7 @@
     let times = {};
     let jogos = [];
     let palpites = [];
+    let bonus = {};
 
     async function carregarDados() {
         try {
@@ -303,6 +304,13 @@
 
             const respJogos = await fetch('jogos.json');
             const jogosBase = await respJogos.json();
+
+            try {
+                const respBonus = await fetch('bonus.json');
+                bonus = await respBonus.json();
+            } catch (erroBonus) {
+                bonus = {};
+            }
 
             jogos = jogosBase.map(jogoLocal => {
                 return {
@@ -322,7 +330,7 @@
             document.getElementById('loading').style.display = 'none';
             document.querySelectorAll('.tab-btn').forEach(btn => btn.disabled = false);
             
-            await inicializar();
+            inicializar();
             abrirAba('ranking');
 
         } catch (error) {
@@ -535,7 +543,7 @@
         });
     }
 
-    async function renderizarRanking() {
+    function renderizarRanking() {
         const pontosPorJogador = {};
 
         jogadoresOficiais.forEach(jogador => {
@@ -566,13 +574,6 @@
             }
         });
 
-        let bonus = {};
-        try {
-            bonus = await carregarBonus();
-        } catch (error) {
-            bonus = {};
-        }
-
         const rankingArray = Object.keys(pontosPorJogador).map(jogador => {
             const pontosNormais = pontosPorJogador[jogador];
             const pontosExtras = bonus[jogador] || 0;
@@ -602,11 +603,11 @@
         });
     }
 
-    async function inicializar() {
+    function inicializar() {
         renderizarFiltroJogadores();
         renderizarResultados();
         renderizarPalpites();
-        await renderizarRanking();
+        renderizarRanking();
     }
 
     window.onload = carregarDados;
