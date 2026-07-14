@@ -1098,5 +1098,16 @@
     "golsA": 1,
     "golsB": 1,
     "status": "finalizado"
+  },
+  {
+    "id": 101,
+    "data": "14/07/2026",
+    "hora": "16:00",
+    "grupo": "Semi Final",
+    "timeA": "França",
+    "timeB": "Espanha",
+    "golsA": 0,
+    "golsB": 2,
+    "status": "finalizado"
   }
 ]
