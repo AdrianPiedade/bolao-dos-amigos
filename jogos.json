@@ -1109,5 +1109,16 @@
     "golsA": 0,
     "golsB": 2,
     "status": "finalizado"
+  },
+  {
+    "id": 102,
+    "data": "15/07/2026",
+    "hora": "16:00",
+    "grupo": "Semi Final",
+    "timeA": "Inglaterra",
+    "timeB": "Argentina",
+    "golsA": 1,
+    "golsB": 2,
+    "status": "finalizado"
   }
 ]
